@@ -7,76 +7,111 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family:'Inter',sans-serif;
-      background:linear-gradient(145deg,#e6ecef,#d9e3e8);
-      min-height:100vh; display:flex; align-items:center; justify-content:center; padding:10px;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #e6ecef, #d9e3e8);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
     }
-    .container { max-width:100%; width:100%; padding:0 10px; text-align:center; }
-    .logo { max-width:100%; margin-bottom:20px; animation:fadeIn 1.2s ease-in; }
-    h2 { color:#005566; font-size:24px; font-weight:700; margin-bottom:20px; letter-spacing:-0.5px; text-transform:uppercase; }
+    .container { max-width: 100%; width: 100%; padding: 0 10px; text-align: center; }
+    .logo { max-width: 100%; margin-bottom: 20px; animation: fadeIn 1.2s ease-in; }
+    h2 { color: #005566; font-size: 24px; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.5px; text-transform: uppercase; }
     .card {
-      background:rgba(255,255,255,.95); backdrop-filter:blur(12px); border-radius:16px; padding:20px;
-      box-shadow:0 8px 30px rgba(0,0,0,.1), inset 0 0 8px rgba(255,255,255,.3);
-      border:1px solid rgba(255,255,255,.2); animation:slideUp .8s ease-out;
+      background: rgba(255, 255, 255, .95);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .1), inset 0 0 8px rgba(255, 255, 255, .3);
+      border: 1px solid rgba(255, 255, 255, .2);
+      animation: slideUp .8s ease-out;
     }
-    .form-grid { display:grid; gap:15px; }
+    .form-grid { display: grid; gap: 15px; }
     .input-group {
-      display:grid; grid-template-columns:35px 1fr; align-items:center;
-      background:#f8fafc; border-radius:10px; padding:4px;
-      box-shadow:inset 3px 3px 6px rgba(0,0,0,.05), inset -3px -3px 6px rgba(255,255,255,.8);
-      transition:box-shadow .3s;
+      display: grid;
+      grid-template-columns: 35px 1fr;
+      align-items: center;
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 4px;
+      box-shadow: inset 3px 3px 6px rgba(0, 0, 0, .05), inset -3px -3px 6px rgba(255, 255, 255, .8);
+      transition: box-shadow .3s;
     }
-    .input-group:hover { box-shadow:inset 1px 1px 4px rgba(0,0,0,.1), inset -1px -1px 4px rgba(255,255,255,.9); }
-    .input-icon { color:#005566; font-size:18px; text-align:center; transition:transform .3s,color .3s; }
-    .input-group:hover .input-icon { transform:scale(1.1); color:#F47920; }
+    .input-group:hover { box-shadow: inset 1px 1px 4px rgba(0, 0, 0, .1), inset -1px -1px 4px rgba(255, 255, 255, .9); }
+    .input-icon { color: #005566; font-size: 18px; text-align: center; transition: transform .3s, color .3s; }
+    .input-group:hover .input-icon { transform: scale(1.1); color: #F47920; }
     input {
-      border:none; background:transparent; padding:10px; font-size:14px; color:#1f2a44;
-      width:100%; outline:none; border-radius:6px;
+      border: none;
+      background: transparent;
+      padding: 10px;
+      font-size: 14px;
+      color: #1f2a44;
+      width: 100%;
+      outline: none;
+      border-radius: 6px;
     }
-    input:focus { background:rgba(255,255,255,.7); box-shadow:0 0 10px rgba(244,121,32,.3); }
-
-    /* ---------- MEDIDAS ---------- */
-    .dimensions-wrapper { margin-top:8px; }
-    .dimensions-grid {
-      display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
-    }
-    .dim-group {
-      display:grid; grid-template-columns:30px 1fr; align-items:center;
-      background:#f0f4f8; border-radius:8px; padding:4px;
-    }
-    .dim-icon { color:#005566; font-size:16px; text-align:center; }
-    .dim-label { font-size:13px; color:#005566; margin-bottom:6px; font-weight:600; }
-
+    input:focus { background: rgba(255, 255, 255, .7); box-shadow: 0 0 10px rgba(244, 121, 32, .3); }
+    /* VOLUMES DINÂMICOS */
+    .volumes-wrapper { margin-top: 8px; }
+    .volume-item { transition: all .3s; margin-bottom: 12px; padding: 10px; background: #f0f4f8; border-radius: 10px; }
+    .volume-item:hover { background: #e8f0f5; }
+    .dim-label { font-size: 12px; color: #005566; font-weight: 600; margin-bottom: 4px; text-align: left; }
+    .remove-volume:hover { background: #c1121f; transform: scale(1.1); }
+    #add-volume { margin-top: 8px; padding: 8px 12px; background: #005566; color: white; border: none; border-radius: 8px; font-size: 13px; }
+    #add-volume:hover { background: #F47920; }
     button {
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      width:100%; padding:14px; background:linear-gradient(90deg,#F47920,#ff8c00);
-      color:white; border:none; border-radius:10px; font-size:15px; font-weight:600;
-      cursor:pointer; box-shadow:0 4px 12px rgba(244,121,32,.3);
-      transition:transform .3s,box-shadow .3s; margin-top:15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, #F47920, #ff8c00);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(244, 121, 32, .3);
+      transition: transform .3s, box-shadow .3s;
+      margin-top: 15px;
     }
-    button:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(244,121,32,.5); }
-
+    button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244, 121, 32, .5); }
     .resultado {
-      margin-top:20px; background:rgba(255,255,255,.95); backdrop-filter:blur(12px);
-      border-radius:16px; padding:20px; box-shadow:0 8px 30px rgba(0,0,0,.1);
-      border:1px solid rgba(255,255,255,.2); text-align:left; animation:fadeIn .6s ease-in;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, .95);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .1);
+      border: 1px solid rgba(255, 255, 255, .2);
+      text-align: left;
+      animation: fadeIn .6s ease-in;
     }
-    .info { display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:14px; color:#1f2a44; }
-    .info i { color:#005566; font-size:20px; }
-    .info strong { color:#005566; font-weight:600; }
-    .loading { display:flex; align-items:center; justify-content:center; gap:10px; color:#005566; font-size:14px; font-weight:500; }
-    .error { display:flex; align-items:center; gap:10px; color:#e63946; font-size:14px; font-weight:500; }
-
-    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-    @keyframes slideUp { from{transform:translateY(50px);opacity:0} to{transform:translateY(0);opacity:1} }
-
-    @media (max-width:480px){
-      .container{padding:5px}.card{padding:15px}h2{font-size:20px}.logo{max-width:300px}
-      .input-group{grid-template-columns:30px 1fr}input{font-size:13px;padding:13px}
-      button{padding:12px;font-size:14px}.info{font-size:13px}.info i{font-size:18px}
-      .dimensions-grid{grid-template-columns:1fr}
+    .info { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 14px; color: #1f2a44; }
+    .info i { color: #005566; font-size: 20px; }
+    .info strong { color: #005566; font-weight: 600; }
+    .loading { display: flex; align-items: center; justify-content: center; gap: 10px; color: #005566; font-size: 14px; font-weight: 500; }
+    .error { display: flex; align-items: center; gap: 10px; color: #e63946; font-size: 14px; font-weight: 500; }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes slideUp { from { transform: translateY(50px); opacity: 0 } to { transform: translateY(0); opacity: 1 } }
+    @media (max-width: 480px) {
+      .container { padding: 5px; }
+      .card { padding: 15px; }
+      h2 { font-size: 20px; }
+      .logo { max-width: 300px; }
+      .input-group { grid-template-columns: 30px 1fr; }
+      input { font-size: 13px; padding: 13px; }
+      button { padding: 12px; font-size: 14px; }
+      .info { font-size: 13px; }
+      .info i { font-size: 18px; }
+      .volume-item > div { grid-template-columns: 1fr 1fr; }
+      .volume-item input { font-size: 12px; }
+      .remove-volume { width: 28px; height: 28px; }
     }
   </style>
 </head>
@@ -84,138 +119,228 @@
   <div class="container">
     <img src="https://raw.githubusercontent.com/waesteves2/frete-territorio/refs/heads/main/rte.png" width="250" alt="Rodonaves Logo" class="logo" />
     <div class="card">
+      <h2>Cotação de Frete</h2>
       <form id="freightForm" class="form-grid">
         <!-- CEPs -->
-        <div class="input-group"><i class="fas fa-map-marker-alt input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-map-marker-alt input-icon"></i>
           <input type="number" id="originZip" placeholder="CEP Origem (8 dígitos)" required pattern="\d{8}" />
         </div>
-        <div class="input-group"><i class="fas fa-map-pin input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-map-pin input-icon"></i>
           <input type="number" id="destinationZip" placeholder="CEP Destino (8 dígitos)" required pattern="\d{8}" />
         </div>
-
         <!-- Peso e Quantidade -->
-        <div class="input-group"><i class="fas fa-weight input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-weight input-icon"></i>
           <input type="number" id="totalWeight" step="0.01" placeholder="Peso Total (kg)" required />
         </div>
-        <div class="input-group"><i class="fas fa-boxes input-icon"></i>
-          <input type="number" id="amountPackages" min="1" placeholder="Quantidade de Volumes" required />
-        </div>
-
-        <!-- MEDIDAS (sempre visíveis) -->
-        <div class="dimensions-wrapper">
-          <div class="dimensions-grid">
-            <div class="dim-group"><i class="fas fa-ruler-horizontal dim-icon"></i>
-              <input type="number" id="length" step="0.1" min="0.1" placeholder="Comprimento" />
-            </div>
-            <div class="dim-group"><i class="fas fa-ruler-vertical dim-icon"></i>
-              <input type="number" id="height" step="0.1" min="0.1" placeholder="Altura" />
-            </div>
-            <div class="dim-group"><i class="fas fa-ruler dim-icon"></i>
-              <input type="number" id="width" step="0.1" min="0.1" placeholder="Largura" />
+        <!-- VOLUMES DINÂMICOS -->
+        <div class="volumes-wrapper">
+          <div class="dim-label" style="margin: 10px 0 5px;">Volumes (adicione quantos tipos precisar)</div>
+          <div id="volumes-container">
+            <!-- Primeiro volume (padrão) -->
+            <div class="volume-item">
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 8px; align-items: end;">
+                <div class="dim-group">
+                  <div class="dim-label">Qtd</div>
+                  <input type="number" class="vol-qty" min="1" value="1" placeholder="Qtd" style="padding: 8px; font-size: 13px;" required />
+                </div>
+                <div class="dim-group">
+                  <div class="dim-label">Comp (cm)</div>
+                  <input type="number" class="vol-length" step="0.1" min="0.1" placeholder="Comp" style="padding: 8px; font-size: 13px;" required />
+                </div>
+                <div class="dim-group">
+                  <div class="dim-label">Alt (cm)</div>
+                  <input type="number" class="vol-height" step="0.1" min="0.1" placeholder="Alt" style="padding: 8px; font-size: 13px;" required />
+                </div>
+                <div class="dim-group">
+                  <div class="dim-label">Larg (cm)</div>
+                  <input type="number" class="vol-width" step="0.1" min="0.1" placeholder="Larg" style="padding: 8px; font-size: 13px;" required />
+                </div>
+                <button type="button" class="remove-volume" style="background: #e63946; color: white; border: none; border-radius: 6px; width: 32px; height: 32px; cursor: pointer;">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
             </div>
           </div>
+          <button type="button" id="add-volume">
+            <i class="fas fa-plus"></i> Adicionar Volume
+          </button>
         </div>
-
         <!-- Valor NF, CPF/CNPJ, Contato -->
-        <div class="input-group"><i class="fas fa-file-invoice-dollar input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-file-invoice-dollar input-icon"></i>
           <input type="number" id="invoiceValue" step="0.01" placeholder="Valor Nota Fiscal (R$)" required />
         </div>
-        <div class="input-group"><i class="fas fa-id-card input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-id-card input-icon"></i>
           <input type="text" id="customerTaxId" placeholder="CPF/CNPJ Remetente" required />
         </div>
-        <div class="input-group"><i class="fas fa-id-badge input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-id-badge input-icon"></i>
           <input type="text" id="receiverTaxId" placeholder="CPF/CNPJ Destinatário" required />
         </div>
-        <div class="input-group"><i class="fas fa-user input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-user input-icon"></i>
           <input type="text" id="contactName" placeholder="Nome Contato" required />
         </div>
-        <div class="input-group"><i class="fas fa-phone input-icon"></i>
+        <div class="input-group">
+          <i class="fas fa-phone input-icon"></i>
           <input type="text" id="contactPhone" placeholder="Telefone" required />
         </div>
-
-        <button type="submit"><i class="fas fa-calculator"></i> Calcular Frete</button>
+        <button type="submit">
+          <i class="fas fa-calculator"></i> Calcular Frete
+        </button>
       </form>
     </div>
-    <div class="resultado" id="result" style="display:none;"></div>
+    <div class="resultado" id="result" style="display: none;"></div>
   </div>
-
   <script>
     const tokenUrl = "https://pickup-apigateway.rte.com.br/token";
     const quotationUrl = "https://quotation-apigateway.rte.com.br/api/v1/gera-cotacao";
     const cityUrl = "https://dne-api.rte.com.br/api/cities/byzipcode";
 
-    /* ---------- CONTROLE DE OBRIGATORIEDADE DAS MEDIDAS ---------- */
-    const amountInput = document.getElementById("amountPackages");
-    const dimInputs = document.querySelectorAll("#length, #height, #width");
+    /* ---------- CONTROLE DE VOLUMES DINÂMICOS ---------- */
+    const volumesContainer = document.getElementById("volumes-container");
+    const addVolumeBtn = document.getElementById("add-volume");
 
-    function toggleDimRequired() {
-      const qty = parseInt(amountInput.value) || 0;
-      dimInputs.forEach(i => i.required = qty > 0);
+    function createVolumeRow(qty = 1, length = '', height = '', width = '') {
+      const div = document.createElement("div");
+      div.className = "volume-item";
+      div.style.marginBottom = "12px";
+      div.style.padding = "10px";
+      div.style.background = "#f0f4f8";
+      div.style.borderRadius = "10px";
+
+      div.innerHTML = `
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 8px; align-items: end;">
+          <div class="dim-group">
+            <div class="dim-label">Qtd</div>
+            <input type="number" class="vol-qty" min="1" value="${qty}" placeholder="Qtd" style="padding: 8px; font-size: 13px;" required />
+          </div>
+          <div class="dim-group">
+            <div class="dim-label">Comp (cm)</div>
+            <input type="number" class="vol-length" step="0.1" min="0.1" value="${length}" placeholder="Comp" style="padding: 8px; font-size: 13px;" required />
+          </div>
+          <div class="dim-group">
+            <div class="dim-label">Alt (cm)</div>
+            <input type="number" class="vol-height" step="0.1" min="0.1" value="${height}" placeholder="Alt" style="padding: 8px; font-size: 13px;" required />
+          </div>
+          <div class="dim-group">
+            <div class="dim-label">Larg (cm)</div>
+            <input type="number" class="vol-width" step="0.1" min="0.1" value="${width}" placeholder="Larg" style="padding: 8px; font-size: 13px;" required />
+          </div>
+          <button type="button" class="remove-volume" style="background: #e63946; color: white; border: none; border-radius: 6px; width: 32px; height: 32px; cursor: pointer;">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+
+      div.querySelector(".remove-volume").addEventListener("click", () => {
+        if (volumesContainer.children.length > 1) {
+          div.remove();
+        } else {
+          alert("Pelo menos um volume é necessário.");
+        }
+      });
+
+      return div;
     }
-    amountInput.addEventListener("input", toggleDimRequired);
-    toggleDimRequired(); // inicial
+
+    addVolumeBtn.addEventListener("click", () => {
+      volumesContainer.appendChild(createVolumeRow());
+    });
 
     /* ---------- FUNÇÕES AUXILIARES ---------- */
     async function getToken() {
       const params = new URLSearchParams();
-      params.append("auth_type","DEV"); params.append("grant_type","password");
-      params.append("username","SIQUEIRASIQUEIRA"); params.append("password","XIFDURBJ");
-      const r = await fetch(tokenUrl,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:params});
-      if(!r.ok) throw new Error("Erro ao obter token.");
-      const d = await r.json(); return d.access_token;
-    }
-    function clean(v){return v.replace(/\D/g,"");}
-
-    async function getCityId(zip,token){
-      if(!/^\d{8}$/.test(zip)) throw new Error(`CEP ${zip} inválido.`);
-      const r = await fetch(`${cityUrl}?zipCode=${zip}`,{
-        headers:{Authorization:`Bearer ${token}`,Accept:"application/json"}
+      params.append("auth_type", "DEV");
+      params.append("grant_type", "password");
+      params.append("username", "SIQUEIRASIQUEIRA");
+      params.append("password", "XIFDURBJ");
+      const r = await fetch(tokenUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params
       });
-      if(!r.ok){ console.warn(`Cidade não encontrada para ${zip}`); return 8997; }
+      if (!r.ok) throw new Error("Erro ao obter token.");
+      const d = await r.json();
+      return d.access_token;
+    }
+
+    function clean(v) { return v.replace(/\D/g, ""); }
+
+    async function getCityId(zip, token) {
+      if (!/^\d{8}$/.test(zip)) throw new Error(`CEP ${zip} inválido.`);
+      const r = await fetch(`${cityUrl}?zipCode=${zip}`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/json" }
+      });
+      if (!r.ok) {
+        console.warn(`Cidade não encontrada para ${zip}`);
+        return 8997;
+      }
       const d = await r.json();
       const city = Array.isArray(d) && d.length ? d[0] : d;
       return city && city.Id ? city.Id : 8997;
     }
 
     /* ---------- ENVIO DA COTAÇÃO ---------- */
-    async function gerarCotacao(e){
+    async function gerarCotacao(e) {
       e.preventDefault();
       const resultDiv = document.getElementById("result");
       resultDiv.style.display = "block";
       resultDiv.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando cotação...</div>';
 
-      try{
+      try {
         const token = await getToken();
-
         const originZip = clean(document.getElementById("originZip").value);
         const destinationZip = clean(document.getElementById("destinationZip").value);
-        if(!/^\d{8}$/.test(originZip) || !/^\d{8}$/.test(destinationZip))
+        if (!/^\d{8}$/.test(originZip) || !/^\d{8}$/.test(destinationZip))
           throw new Error("CEPs devem ter 8 dígitos.");
 
-        const originCityId = await getCityId(originZip,token);
-        const destCityId     = await getCityId(destinationZip,token);
+        const originCityId = await getCityId(originZip, token);
+        const destCityId = await getCityId(destinationZip, token);
 
-        const amountPackages = parseInt(document.getElementById("amountPackages").value);
-        const totalWeight    = parseFloat(document.getElementById("totalWeight").value);
-        const contactName    = document.getElementById("contactName").value;
+        const totalWeight = parseFloat(document.getElementById("totalWeight").value);
+        const invoiceValue = parseFloat(document.getElementById("invoiceValue").value);
+        const contactName = document.getElementById("contactName").value;
 
-        if(isNaN(totalWeight)||totalWeight<=0||amountPackages<1)
-          throw new Error("Peso e quantidade de volumes inválidos.");
+        if (isNaN(totalWeight) || totalWeight <= 0)
+          throw new Error("Peso total inválido.");
 
-        const pack = {
-          AmountPackages: amountPackages,
-          Weight: totalWeight / amountPackages
-        };
+        // Coletar volumes
+        const volumeItems = document.querySelectorAll(".volume-item");
+        const packs = [];
+        let totalVolumes = 0;
 
-        // MEDIDAS (só enviadas se qty > 5)
-        if(amountPackages > 0){
-          const L = parseFloat(document.getElementById("length").value);
-          const H = parseFloat(document.getElementById("height").value);
-          const W = parseFloat(document.getElementById("width").value);
-          if(isNaN(L)||isNaN(H)||isNaN(W)||L<=0||H<=0||W<=0)
-            throw new Error("Preencha todas as medidas com valores positivos.");
-          pack.Length = L; pack.Height = H; pack.Width = W;
+        for (const item of volumeItems) {
+          const qty = parseInt(item.querySelector(".vol-qty").value);
+          const length = parseFloat(item.querySelector(".vol-length").value);
+          const height = parseFloat(item.querySelector(".vol-height").value);
+          const width = parseFloat(item.querySelector(".vol-width").value);
+
+          if (isNaN(qty) || qty < 1) throw new Error("Quantidade de volume inválida.");
+          if (isNaN(length) || isNaN(height) || isNaN(width) || length <= 0 || height <= 0 || width <= 0)
+            throw new Error("Preencha todas as medidas de todos os volumes.");
+
+          totalVolumes += qty;
+          packs.push({
+            AmountPackages: qty,
+            Length: length,
+            Height: height,
+            Width: width,
+            Weight: 0 // Será calculado depois
+          });
         }
+
+        if (totalVolumes === 0) throw new Error("Adicione pelo menos um volume.");
+
+        // Distribuir peso proporcionalmente
+        const weightPerUnit = totalWeight / totalVolumes;
+        packs.forEach(pack => {
+          pack.Weight = parseFloat((pack.AmountPackages * weightPerUnit).toFixed(4));
+        });
 
         const payload = {
           OriginZipCode: originZip,
@@ -223,41 +348,48 @@
           DestinationZipCode: destinationZip,
           DestinationCityId: destCityId,
           TotalWeight: totalWeight,
-          EletronicInvoiceValue: parseFloat(document.getElementById("invoiceValue").value),
+          EletronicInvoiceValue: invoiceValue,
           CustomerTaxIdRegistration: clean(document.getElementById("customerTaxId").value),
           ReceiverCpfcnp: clean(document.getElementById("receiverTaxId").value),
           ContactName: `Catanduva-${contactName}`,
           ContactPhoneNumber: clean(document.getElementById("contactPhone").value),
-          CustomerEmail: "abraao.nezin@rte.com.br",   // <-- email fixo
-          Packs: [pack]
+          CustomerEmail: "abraao.nezin@rte.com.br",
+          Packs: packs
         };
 
         let warnings = "";
-        if(originCityId===8997) warnings += `<div class="error"><i class="fas fa-exclamation-circle"></i> CEP origem (${originZip}) não encontrado – usando padrão.</div>`;
-        if(destCityId===8997)   warnings += `<div class="error"><i class="fas fa-exclamation-circle"></i> CEP destino (${destinationZip}) não encontrado – usando padrão.</div>`;
+        if (originCityId === 8997)
+          warnings += `<div class="error"><i class="fas fa-exclamation-circle"></i> CEP origem (${originZip}) não encontrado – usando padrão.</div>`;
+        if (destCityId === 8997)
+          warnings += `<div class="error"><i class="fas fa-exclamation-circle"></i> CEP destino (${destinationZip}) não encontrado – usando padrão.</div>`;
 
-        const resp = await fetch(quotationUrl,{
-          method:"POST",
-          headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json",Accept:"application/json"},
-          body:JSON.stringify(payload)
+        const resp = await fetch(quotationUrl, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          },
+          body: JSON.stringify(payload)
         });
-        if(!resp.ok){
+
+        if (!resp.ok) {
           const txt = await resp.text();
           throw new Error(`Erro ${resp.status}: ${txt}`);
         }
-        const data = await resp.json();
 
+        const data = await resp.json();
         resultDiv.innerHTML = warnings + `
-          <div class="info"><i class="fas fa-dollar-sign"></i> <strong>Valor do Frete:</strong> R$ ${data.Value.toFixed(2).replace('.',[','])}</div>
+          <div class="info"><i class="fas fa-dollar-sign"></i> <strong>Valor do Frete:</strong> R$ ${data.Value.toFixed(2).replace('.', ',')}</div>
           <div class="info"><i class="fas fa-clock"></i> <strong>Prazo de Entrega:</strong> ${data.DeliveryTime} dia(s) útil(eis)</div>
           <div class="info"><i class="fas fa-barcode"></i> <strong>Protocolo:</strong> ${data.ProtocolNumber}</div>
         `;
-      }catch(err){
+      } catch (err) {
         resultDiv.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Erro: ${err.message}</div>`;
       }
     }
 
-    document.getElementById("freightForm").addEventListener("submit",gerarCotacao);
+    document.getElementById("freightForm").addEventListener("submit", gerarCotacao);
   </script>
 </body>
 </html>
