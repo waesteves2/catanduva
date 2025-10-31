@@ -43,7 +43,7 @@
     .input-group:hover { box-shadow: inset 1px 1px 4px rgba(0, 0, 0, .1), inset -1px -1px 4px rgba(255, 255, 255, .9); }
     .input-icon { color: #005566; font-size: 18px; text-align: center; transition: transform .3s, color .3s; }
     .input-group:hover .input-icon { transform: scale(1.1); color: #F47920; }
-    input {
+    input, select {
       border: none;
       background: transparent;
       padding: 10px;
@@ -52,9 +52,20 @@
       width: 100%;
       outline: none;
       border-radius: 6px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
     }
-    input:focus { background: rgba(255, 255, 255, .7); box-shadow: 0 0 10px rgba(244, 121, 32, .3); }
-    /* VOLUMES DINÂMICOS */
+    select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005566'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 12px;
+    }
+    input:focus, select:focus {
+      background: rgba(255, 255, 255, .7);
+      box-shadow: 0 0 10px rgba(244, 121, 32, .3);
+    }
     .volumes-wrapper { margin-top: 8px; }
     .volume-item { transition: all .3s; margin-bottom: 12px; padding: 10px; background: #f0f4f8; border-radius: 10px; }
     .volume-item:hover { background: #e8f0f5; }
@@ -105,7 +116,7 @@
       h2 { font-size: 20px; }
       .logo { max-width: 300px; }
       .input-group { grid-template-columns: 30px 1fr; }
-      input { font-size: 13px; padding: 13px; }
+      input, select { font-size: 13px; padding: 13px; }
       button { padding: 12px; font-size: 14px; }
       .info { font-size: 13px; }
       .info i { font-size: 18px; }
@@ -130,11 +141,23 @@
           <i class="fas fa-map-pin input-icon"></i>
           <input type="number" id="destinationZip" placeholder="CEP Destino (8 dígitos)" required pattern="\d{8}" />
         </div>
-        <!-- Peso e Quantidade -->
+
+        <!-- Peso total -->
         <div class="input-group">
           <i class="fas fa-weight input-icon"></i>
           <input type="number" id="totalWeight" step="0.01" placeholder="Peso Total (kg)" required />
         </div>
+
+        <!-- Pagador do frete -->
+        <div class="input-group">
+          <i class="fas fa-hand-holding-usd input-icon"></i>
+          <select id="payerSelected" required>
+            <option value="" disabled selected>Pagador do Frete</option>
+            <option value="0">Remetente (0)</option>
+            <option value="1">Destinatário (1)</option>
+          </select>
+        </div>
+
         <!-- VOLUMES DINÂMICOS -->
         <div class="volumes-wrapper">
           <div class="dim-label" style="margin: 10px 0 5px;">Volumes (adicione quantos tipos precisar)</div>
@@ -168,6 +191,7 @@
             <i class="fas fa-plus"></i> Adicionar Volume
           </button>
         </div>
+
         <!-- Valor NF, CPF/CNPJ, Contato -->
         <div class="input-group">
           <i class="fas fa-file-invoice-dollar input-icon"></i>
@@ -189,6 +213,7 @@
           <i class="fas fa-phone input-icon"></i>
           <input type="text" id="contactPhone" placeholder="Telefone" required />
         </div>
+
         <button type="submit">
           <i class="fas fa-calculator"></i> Calcular Frete
         </button>
@@ -196,6 +221,7 @@
     </div>
     <div class="resultado" id="result" style="display: none;"></div>
   </div>
+
   <script>
     const tokenUrl = "https://pickup-apigateway.rte.com.br/token";
     const quotationUrl = "https://quotation-apigateway.rte.com.br/api/v1/gera-cotacao";
@@ -212,7 +238,6 @@
       div.style.padding = "10px";
       div.style.background = "#f0f4f8";
       div.style.borderRadius = "10px";
-
       div.innerHTML = `
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 8px; align-items: end;">
           <div class="dim-group">
@@ -236,7 +261,6 @@
           </button>
         </div>
       `;
-
       div.querySelector(".remove-volume").addEventListener("click", () => {
         if (volumesContainer.children.length > 1) {
           div.remove();
@@ -244,7 +268,6 @@
           alert("Pelo menos um volume é necessário.");
         }
       });
-
       return div;
     }
 
@@ -278,7 +301,7 @@
       });
       if (!r.ok) {
         console.warn(`Cidade não encontrada para ${zip}`);
-        return 8997;
+        return 8997;   // fallback
       }
       const d = await r.json();
       const city = Array.isArray(d) && d.length ? d[0] : d;
@@ -294,6 +317,7 @@
 
       try {
         const token = await getToken();
+
         const originZip = clean(document.getElementById("originZip").value);
         const destinationZip = clean(document.getElementById("destinationZip").value);
         if (!/^\d{8}$/.test(originZip) || !/^\d{8}$/.test(destinationZip))
@@ -305,11 +329,13 @@
         const totalWeight = parseFloat(document.getElementById("totalWeight").value);
         const invoiceValue = parseFloat(document.getElementById("invoiceValue").value);
         const contactName = document.getElementById("contactName").value;
+        const payerSelected = parseInt(document.getElementById("payerSelected").value);
 
-        if (isNaN(totalWeight) || totalWeight <= 0)
-          throw new Error("Peso total inválido.");
+        if (isNaN(totalWeight) || totalWeight <= 0) throw new Error("Peso total inválido.");
+        if (isNaN(payerSelected) || payerSelected < 0 || payerSelected > 1)
+          throw new Error("Selecione quem paga o frete.");
 
-        // Coletar volumes
+        // ---- Volumes ----
         const volumeItems = document.querySelectorAll(".volume-item");
         const packs = [];
         let totalVolumes = 0;
@@ -325,23 +351,14 @@
             throw new Error("Preencha todas as medidas de todos os volumes.");
 
           totalVolumes += qty;
-          packs.push({
-            AmountPackages: qty,
-            Length: length,
-            Height: height,
-            Width: width,
-            Weight: 0 // Será calculado depois
-          });
+          packs.push({ AmountPackages: qty, Length: length, Height: height, Width: width, Weight: 0 });
         }
-
         if (totalVolumes === 0) throw new Error("Adicione pelo menos um volume.");
 
-        // Distribuir peso proporcionalmente
         const weightPerUnit = totalWeight / totalVolumes;
-        packs.forEach(pack => {
-          pack.Weight = parseFloat((pack.AmountPackages * weightPerUnit).toFixed(4));
-        });
+        packs.forEach(p => p.Weight = parseFloat((p.AmountPackages * weightPerUnit).toFixed(4)));
 
+        // ---- Payload ----
         const payload = {
           OriginZipCode: originZip,
           OriginCityId: originCityId,
@@ -354,7 +371,8 @@
           ContactName: `Catanduva-${contactName}`,
           ContactPhoneNumber: clean(document.getElementById("contactPhone").value),
           CustomerEmail: "abraao.nezin@rte.com.br",
-          Packs: packs
+          Packs: packs,
+          PayerSelected: payerSelected   // <--- campo adicionado
         };
 
         let warnings = "";
@@ -379,11 +397,14 @@
         }
 
         const data = await resp.json();
+
         resultDiv.innerHTML = warnings + `
           <div class="info"><i class="fas fa-dollar-sign"></i> <strong>Valor do Frete:</strong> R$ ${data.Value.toFixed(2).replace('.', ',')}</div>
           <div class="info"><i class="fas fa-clock"></i> <strong>Prazo de Entrega:</strong> ${data.DeliveryTime} dia(s) útil(eis)</div>
           <div class="info"><i class="fas fa-barcode"></i> <strong>Protocolo:</strong> ${data.ProtocolNumber}</div>
+          <div class="info"><i class="fas fa-user-check"></i> <strong>Pagador:</strong> ${payerSelected === 0 ? 'Remetente' : 'Destinatário'}</div>
         `;
+
       } catch (err) {
         resultDiv.innerHTML = `<div class="error"><i class="fas fa-exclamation-circle"></i> Erro: ${err.message}</div>`;
       }
